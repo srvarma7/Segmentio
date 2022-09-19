@@ -531,7 +531,7 @@ open class Segmentio: UIView {
             let maxItems = maxVisibleItems > segmentioItems.count ? segmentioItems.count : maxVisibleItems
             width = maxItems == 0 ? 0 : floor(collectionViewWidth / CGFloat(maxItems))
             
-        case .dynamic:
+        case .dynamic(let minWidth):
             guard !segmentioItems.isEmpty else {
                 break
             }
@@ -546,6 +546,7 @@ open class Segmentio: UIView {
             } else {
                 width = itemWidth + ((collectionViewWidth - dynamicWidth) / CGFloat(segmentioItems.count))
             }
+            if width < minWidth { width = minWidth }
         }
         
         return width

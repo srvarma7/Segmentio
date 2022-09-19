@@ -135,7 +135,7 @@ public struct SegmentioIndicatorOptions {
 // MARK: - Position
 
 public enum SegmentioPosition {
-    case dynamic
+    case dynamic(minWidth: CGFloat)
     case fixed(maxVisibleItems: Int)
 }
 

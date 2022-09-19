@@ -50,7 +50,8 @@ class ExampleViewController: UIViewController {
         setupScrollView()
         SegmentioBuilder.buildSegmentioView(
             segmentioView: segmentioView,
-            segmentioStyle: segmentioStyle
+            segmentioStyle: segmentioStyle,
+            segmentioPosition: .dynamic(minWidth: 100)
         )
         SegmentioBuilder.setupBadgeCountForIndex(segmentioView, index: 1)
         
