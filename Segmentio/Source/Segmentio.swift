@@ -440,11 +440,30 @@ open class Segmentio: UIView {
         endPointWithVerticalSeparator.x = endPoint.x - (isLastItem ? 0 : 1)
         
         let shapeLayerPath = UIBezierPath()
-        shapeLayerPath.move(to: startPoint)
-        shapeLayerPath.addLine(to: endPointWithVerticalSeparator)
-        shapeLayerPath.lineCapStyle = roundedCorners ? .round : .butt
         
-        if animated {
+        let curveDistance: CGFloat = 12
+        let horizontalInset: CGFloat = 10
+        
+        let minX = startPoint.x + horizontalInset
+        let maxX = endPoint.x - horizontalInset
+        
+        let height: CGFloat = 3
+        let minY = startPoint.y - height
+        let maxY = endPoint.y
+        
+        let leftCurveEnd = CGPoint(x: minX + curveDistance, y: minY)
+        let leftCurveControlPoint = CGPoint(x: minX, y: minY)
+        
+        let rightCurveEnd = CGPoint(x: maxX, y: maxY)
+        let rightCurveControlPoint = CGPoint(x: maxX, y: maxY)
+        
+        shapeLayerPath.move(to: CGPoint(x: minX, y: maxY))
+        shapeLayerPath.addQuadCurve(to: leftCurveEnd, controlPoint: leftCurveControlPoint)
+        shapeLayerPath.addLine(to: CGPoint(x: maxX - curveDistance, y: minY))
+        shapeLayerPath.addQuadCurve(to: rightCurveEnd, controlPoint: rightCurveControlPoint)
+        shapeLayerPath.close()
+        
+        if animated == true {
             isPerformingScrollAnimation = true
             isUserInteractionEnabled = false
             
