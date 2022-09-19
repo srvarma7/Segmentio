@@ -455,7 +455,7 @@ open class Segmentio: UIView {
         let leftCurveControlPoint = CGPoint(x: minX, y: minY)
         
         let rightCurveEnd = CGPoint(x: maxX, y: maxY)
-        let rightCurveControlPoint = CGPoint(x: maxX, y: maxY)
+        let rightCurveControlPoint = CGPoint(x: maxX, y: minY)
         
         shapeLayerPath.move(to: CGPoint(x: minX, y: maxY))
         shapeLayerPath.addQuadCurve(to: leftCurveEnd, controlPoint: leftCurveControlPoint)
