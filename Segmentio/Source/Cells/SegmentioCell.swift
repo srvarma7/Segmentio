@@ -85,7 +85,7 @@ class SegmentioCell: UICollectionViewCell {
         imageContainerView?.translatesAutoresizingMaskIntoConstraints = false
         
         segmentImageView?.layer.masksToBounds = true
-        segmentTitleLabel?.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
+        segmentTitleLabel?.font = .systemFont(ofSize: 20)
         
         setupConstraintsForSubviews()
         addVerticalSeparator()
@@ -125,7 +125,7 @@ class SegmentioCell: UICollectionViewCell {
         }
         
         if let _ = options.verticalSeparatorOptions {
-            if !isLastCell {
+            if isLastCell == false {
                 setupVerticalSeparators()
             }
         }
@@ -142,8 +142,8 @@ class SegmentioCell: UICollectionViewCell {
             segmentTitleLabel?.textColor = selected ? selectedState.titleTextColor : defaultState.titleTextColor
             segmentTitleLabel?.font = selected ? selectedState.titleFont : defaultState.titleFont
             segmentTitleLabel?.alpha = selected ? selectedState.titleAlpha : defaultState.titleAlpha
-            segmentTitleLabel?.minimumScaleFactor = 0.5
-            segmentTitleLabel?.adjustsFontSizeToFitWidth = true
+//            segmentTitleLabel?.minimumScaleFactor = 0.5
+//            segmentTitleLabel?.adjustsFontSizeToFitWidth = true
         }
                 
         if (style != .onlyLabel) {
@@ -201,7 +201,7 @@ class SegmentioCell: UICollectionViewCell {
             attribute: .trailing,
             relatedBy: .equal,
             toItem: containerView,
-            attribute: .trailingMargin,
+            attribute: .trailing,
             multiplier: 1.0,
             constant: 0
         )
@@ -210,7 +210,7 @@ class SegmentioCell: UICollectionViewCell {
             attribute: .leading,
             relatedBy: .equal,
             toItem: containerView,
-            attribute: .leadingMargin,
+            attribute: .leading,
             multiplier: 1.0,
             constant: 0
         )
@@ -293,10 +293,9 @@ class SegmentioCell: UICollectionViewCell {
             segmentTitleLabel?.numberOfLines = options.labelTextNumberOfLines
             let defaultState = options.states.defaultState
             segmentTitleLabel?.textColor = defaultState.titleTextColor
-            segmentTitleLabel?.font = defaultState.titleFont
+            segmentTitleLabel?.font = UIFont.systemFont(ofSize: 20)
             segmentTitleLabel?.text = content.title
-            segmentTitleLabel?.minimumScaleFactor = 0.5
-            segmentTitleLabel?.adjustsFontSizeToFitWidth = true
+            segmentTitleLabel?.adjustsFontSizeToFitWidth = false
         }
     }
     
@@ -312,13 +311,12 @@ class SegmentioCell: UICollectionViewCell {
     // MARK: - Vertical separator
     
     private func addVerticalSeparator() {
-        let contentViewHeight = contentView.bounds.height
-        let x: CGFloat = contentView.bounds.width - 1
+        let contentViewWidth = contentView.bounds.width
         let rect = CGRect(
-            x: x,
-            y: 0.0,
+            x: contentView.bounds.width - 1,
+            y: 0,
             width: 1,
-            height: contentViewHeight
+            height: contentViewWidth
         )
         verticalSeparatorView = UIView(frame: rect)
         
@@ -335,7 +333,7 @@ class SegmentioCell: UICollectionViewCell {
         // setup constraints
         
         verticalSeparatorView.translatesAutoresizingMaskIntoConstraints = false
-        verticalSeparatorView.layer.masksToBounds = true
+        
         let widthConstraint = NSLayoutConstraint(
             item: verticalSeparatorView,
             attribute: .width,
@@ -345,6 +343,7 @@ class SegmentioCell: UICollectionViewCell {
             multiplier: 1,
             constant: 1
         )
+        widthConstraint.isActive = true
         
         let trailingConstraint = NSLayoutConstraint(
             item: verticalSeparatorView,
@@ -355,6 +354,7 @@ class SegmentioCell: UICollectionViewCell {
             multiplier: 1,
             constant: 0
         )
+        trailingConstraint.isActive = true
         
         let topConstraint = NSLayoutConstraint(
             item: verticalSeparatorView,
@@ -365,22 +365,18 @@ class SegmentioCell: UICollectionViewCell {
             multiplier: 1,
             constant: 0
         )
+        topConstraint.isActive = true
         
         let bottomConstraint = NSLayoutConstraint(
-            item: verticalSeparatorView,
+            item: contentView,
             attribute: .bottom,
             relatedBy: .equal,
-            toItem: contentView,
+            toItem: verticalSeparatorView,
             attribute: .bottom,
             multiplier: 1,
             constant: 0
         )
-        NSLayoutConstraint.activate([
-            widthConstraint,
-            trailingConstraint,
-            topConstraint,
-            bottomConstraint
-        ])
+        bottomConstraint.isActive = true
     }
     
     private func setupVerticalSeparators() {
@@ -401,7 +397,7 @@ class SegmentioCell: UICollectionViewCell {
         let path = UIBezierPath()
         path.move(to: CGPoint(x: verticalSeparatorView.frame.width / 2, y: startY))
         path.addLine(to: CGPoint(x: verticalSeparatorView.frame.width / 2, y: endY))
-
+        
         verticalSeparatorLayer.path = path.cgPath
         verticalSeparatorLayer.lineWidth = 1
         verticalSeparatorLayer.strokeColor = verticalSeparatorOptions.color.cgColor
