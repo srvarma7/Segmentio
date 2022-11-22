@@ -20,7 +20,9 @@ public struct SegmentioItem {
     public var intrinsicWidth: CGFloat {
         let label = UILabel()
         label.text = self.title
-        label.sizeToFit()
+        label.numberOfLines = 1
+        label.font = .systemFont(ofSize: 20)
+//        label.sizeToFit()
         return label.intrinsicContentSize.width
     }
 
@@ -119,15 +121,13 @@ public struct SegmentioIndicatorOptions {
     var ratio: CGFloat
     var height: CGFloat
     var color: UIColor
-    var roundedCorners: Bool
     
     public init(type: SegmentioIndicatorType = .bottom, ratio: CGFloat = 1, height: CGFloat = 2,
-                color: UIColor = .orange, roundedCorners: Bool = false) {
+                color: UIColor = .orange) {
         self.type = type
         self.ratio = ratio
         self.height = height
         self.color = color
-        self.roundedCorners = roundedCorners
     }
     
 }
@@ -135,7 +135,7 @@ public struct SegmentioIndicatorOptions {
 // MARK: - Position
 
 public enum SegmentioPosition {
-    case dynamic
+    case dynamic(minWidth: CGFloat)
     case fixed(maxVisibleItems: Int)
 }
 
@@ -173,7 +173,7 @@ public enum SegmentioStyle: String {
     }
 
     public var layoutMargins: CGFloat {
-        let defaultLayoutMargins: CGFloat = 8.0
+        let defaultLayoutMargins: CGFloat = 4.0
         switch self {
         case .onlyLabel, .imageAfterLabel, .imageBeforeLabel, .imageOverLabel, .imageUnderLabel:
             return 4 * defaultLayoutMargins
@@ -199,8 +199,7 @@ public struct SegmentioOptions {
     var labelTextNumberOfLines: Int
     var states: SegmentioStates
     var animationDuration: CFTimeInterval
-    var userInterractionEnabled: Bool
-
+    
     public init() {
         self.backgroundColor = .lightGray
         self.segmentPosition = .fixed(maxVisibleItems: 4)
@@ -215,7 +214,6 @@ public struct SegmentioOptions {
                                         selectedState: SegmentioState(),
                                         highlightedState: SegmentioState())
         self.animationDuration = 0.1
-        self.userInterractionEnabled = true
     }
 
     public init(backgroundColor: UIColor = .lightGray,
@@ -230,8 +228,7 @@ public struct SegmentioOptions {
                 segmentStates: SegmentioStates = SegmentioStates(defaultState: SegmentioState(),
                                                                  selectedState: SegmentioState(),
                                                                  highlightedState: SegmentioState()),
-                animationDuration: CFTimeInterval = 0.1,
-                userInterractionEnabled: Bool = true) {
+                animationDuration: CFTimeInterval = 0.1) {
         self.backgroundColor = backgroundColor
         self.segmentPosition = segmentPosition
         self.scrollEnabled = scrollEnabled
@@ -243,6 +240,5 @@ public struct SegmentioOptions {
         self.labelTextNumberOfLines = labelTextNumberOfLines
         self.states = segmentStates
         self.animationDuration = animationDuration
-        self.userInterractionEnabled = userInterractionEnabled
     }
 }
